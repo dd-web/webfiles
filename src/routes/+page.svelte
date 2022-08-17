@@ -1,1 +1,1 @@
-<h1 class="text-3xl font-bold text-center">Home</h1>
+<h1 class="text-center">Home</h1>
