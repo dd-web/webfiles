@@ -18,6 +18,10 @@
   h1, h2, h3 {
     @apply font-bold py-4;
   }
+
+  svg {
+    @apply fill-inherit pointer-events-none inline-block align-super stroke-inherit;
+  }
 }
 
 html, body {
