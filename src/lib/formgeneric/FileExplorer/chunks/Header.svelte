@@ -1,5 +1,7 @@
 <script>
+	import ToolbarButton from '$lib/shared/ToolbarButton.svelte';
 	import ToolbarNewMenu from './ToolbarNewMenu.svelte';
+	import HeaderNav from './HeaderNav.svelte';
 
 	// icons
 	import ScissorsIcon from '$lib/shared/svg/ScissorsIcon.svelte';
@@ -10,12 +12,12 @@
 	import AngleDown from '$lib/shared/svg/AngleDown.svelte';
 	import PlusIcon from '$lib/shared/svg/PlusIcon.svelte';
 
-	import ToolbarButton from '$lib/shared/ToolbarButton.svelte';
-	import Toggle from '$lib/shared/Toggle.svelte';
+	let toolbarNewMenuVisible = false;
 
-	let toolbarNewMenuVisible = true;
-
-	export const toggleNewMenu = (e) => {
+	/**
+	 * Toggle the "New" menu list
+	 */
+	const toggleNewMenu = (e) => {
 		if (e.detail > 1) {
 			e.preventDefault();
 		}
@@ -23,7 +25,7 @@
 	};
 </script>
 
-<div class="explorer-head">
+<div class="explorer-header">
 	<ul class="tools">
 		<li>
 			<ToolbarButton handler={toggleNewMenu} class="flex items-center h-10">
@@ -66,33 +68,35 @@
 		</li>
 		<i />
 	</ul>
+
+	<HeaderNav />
 </div>
 
 <style lang="postcss">
-	div.explorer-head {
-		@apply bg-zinc-800;
+	div.explorer-header {
+		@apply bg-zinc-800 flex flex-col justify-end;
 		grid-column: 1 / 3;
 		grid-row: 1;
-	}
 
-	ul.tools {
-		@apply flex gap-4 items-center h-full px-4;
+		ul.tools {
+			@apply flex gap-4 items-center px-4 py-2;
 
-		li {
-			@apply w-auto;
+			li {
+				@apply w-auto;
+			}
+
+			i {
+				@apply w-[1px] h-10 bg-white opacity-10;
+			}
 		}
 
-		i {
-			@apply w-[1px] h-10 bg-white opacity-10;
+		.new-plus-icon {
+			@apply w-6 h-6 rounded-full border-zinc-600 border-2 p-1 transition-all;
+			@apply grid content-center justify-items-center items-center;
 		}
-	}
 
-	.new-plus-icon {
-		@apply w-6 h-6 rounded-full border-zinc-600 border-2 p-1 transition-all;
-		@apply grid content-center justify-items-center items-center;
-	}
-
-	.new-angle-icon {
-		@apply w-8 h-8 p-2 self-center transition-all;
+		.new-angle-icon {
+			@apply w-8 h-8 p-2 self-center transition-all;
+		}
 	}
 </style>

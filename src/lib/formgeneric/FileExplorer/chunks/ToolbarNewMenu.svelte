@@ -38,7 +38,7 @@
 
 <style lang="postcss">
 	ul {
-		@apply absolute bg-zinc-800 p-2 rounded-md border-2 border-zinc-600 border-opacity-50;
+		@apply absolute bg-zinc-800 p-2 rounded-md border-2 border-zinc-600 border-opacity-50 z-10;
 
 		li {
 			button {

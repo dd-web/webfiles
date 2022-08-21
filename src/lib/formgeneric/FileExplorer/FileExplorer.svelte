@@ -35,6 +35,6 @@
 	section {
 		@apply grid;
 		grid-template-columns: 15rem 45fr;
-		grid-template-rows: 5rem 45rem;
+		grid-template-rows: 7.5rem 45rem;
 	}
 </style>

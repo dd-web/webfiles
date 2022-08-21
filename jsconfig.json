@@ -7,7 +7,7 @@
 			"$stores/*": ["src/stores/*"]
 		},
 		"allowJs": true,
-		"checkJs": true,
+		"checkJs": false,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
