@@ -20,7 +20,11 @@
   }
 
   svg {
-    @apply fill-inherit pointer-events-none inline-block align-super stroke-inherit;
+    @apply fill-inherit pointer-events-none stroke-inherit transition-all;
+  }
+
+  span {
+    @apply transition-all;
   }
 }
 
