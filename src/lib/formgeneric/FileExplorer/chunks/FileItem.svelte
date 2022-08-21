@@ -9,7 +9,6 @@
 
 	$: useDragClass = $source === file.id && $isDragging;
 	$: useDropClass = !$isDragging && $target === file.id && $isDraggedOver;
-	$: console.log('use drop class', useDropClass);
 
 	const internalDataType = 'apsys/systruct';
 
@@ -44,7 +43,6 @@
 	};
 
 	const onDragLeave = (e) => {
-		console.log('left drop zone?');
 		$target = null;
 		$isDraggedOver = false;
 	};
@@ -54,10 +52,9 @@
 	 * this is a receiver for the currently dragged item to be dropped into
 	 */
 	const onDroppedOn = (e) => {
-		console.log('dropped on', e);
 		isDragging.set(false);
 		let data = e.dataTransfer.getData(internalDataType);
-		console.log('to be moved:', data);
+		console.log('to be moved:', data, 'to: ', $target);
 		source.set(null);
 		target.set(null);
 		isDraggedOver.set(false);
@@ -65,7 +62,6 @@
 	};
 
 	const onDragEnd = (e) => {
-		console.log('drag ended');
 		source.set(null);
 		target.set(null);
 		isDragging.set(false);
@@ -75,7 +71,6 @@
 	const onDragStart = (e) => {
 		source.set(file.id);
 		isDragging.set(true);
-		console.log('start dragging', e);
 		e.dataTransfer.setData(internalDataType, e.target.dataset.value);
 		e.dataTransfer.effectAllowed = 'move';
 	};
@@ -103,7 +98,7 @@
 
 <style lang="postcss">
 	.file {
-		@apply h-full w-full flex flex-col justify-center items-center rounded-md;
+		@apply h-full w-full flex flex-col justify-center border-sky-100 border-opacity-0 border-2 border-dotted items-center rounded-md transition-all duration-200;
 		@apply hover:bg-black hover:bg-opacity-20;
 
 		.icon {
