@@ -27,6 +27,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@supabase/supabase-js": "^2.0.0-rc.10",
 		"nanoid": "^4.0.0"
 	}
 }

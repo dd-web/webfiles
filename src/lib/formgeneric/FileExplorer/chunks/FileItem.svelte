@@ -115,7 +115,7 @@
 	<div class="icon">
 		<FolderIcon />
 	</div>
-	<p class="text-center">{file.title}</p>
+	<p class="text-center px-2 overflow-hidden text-ellipsis">{file.title}</p>
 </div>
 
 <style lang="postcss">

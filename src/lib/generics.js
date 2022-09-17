@@ -249,7 +249,7 @@ export const rootDefault = [
 		contains: [
 			{
 				id: nanoGenId(),
-				title: 'lol cool programs',
+				title: 'lol cool programs man very neato',
 				child_namespace: 'lol-cool-programs',
 				parent_namespace: 'program-files',
 				file_type: 'FOLDER',

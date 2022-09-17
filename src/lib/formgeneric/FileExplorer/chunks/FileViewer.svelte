@@ -1,9 +1,6 @@
 <script>
 	import { fileSystemState } from '$stores/filesystem';
-	import { onMount } from 'svelte';
 	import FileItem from './FileItem.svelte';
-
-	onMount(() => {});
 </script>
 
 <div class="file-viewer">
