@@ -214,7 +214,7 @@ export const rootDefault = [
 					{
 						id: nanoGenId(),
 						title: 'some random folder',
-						child_namespace: 'some folder',
+						child_namespace: 'some-ffgsdanolder',
 						parent_namespace: 'desktop',
 						file_type: 'FOLDER',
 						show_on_sidebar: false,
@@ -225,7 +225,7 @@ export const rootDefault = [
 					{
 						id: nanoGenId(),
 						title: 'another trash folder',
-						child_namespace: 'another-trash-folder',
+						child_namespace: 'cool-duuude',
 						parent_namespace: 'desktop',
 						file_type: 'FOLDER',
 						show_on_sidebar: false,
@@ -260,54 +260,19 @@ export const rootDefault = [
 					{
 						id: nanoGenId(),
 						title: 'some random folder',
-						child_namespace: 'some-folder',
+						child_namespace: 'some-foldedssdgafr',
 						parent_namespace: 'lol-cool-programs',
 						file_type: 'FOLDER',
 						show_on_sidebar: false,
 						show_in_explorer: true,
 						icon_lg: icons.folder,
-						contains: [
-							{
-								id: nanoGenId(),
-								title: 'not just ANY folder',
-								child_namespace: 'not-just-any-folder',
-								parent_namespace: 'some-folder',
-								file_type: 'FOLDER',
-								show_on_sidebar: false,
-								show_in_explorer: true,
-								icon_lg: icons.icon_colorMonitor,
-								contains: [
-									{
-										id: nanoGenId(),
-										title: 'some random folder',
-										child_namespace: 'some folder',
-										parent_namespace: 'not-just-any-folder',
-										file_type: 'FOLDER',
-										show_on_sidebar: false,
-										show_in_explorer: true,
-										icon_lg: icons.folder,
-										contains: []
-									},
-									{
-										id: nanoGenId(),
-										title: 'another trash folder',
-										child_namespace: 'bahh',
-										parent_namespace: 'desktop',
-										file_type: 'FOLDER',
-										show_on_sidebar: false,
-										show_in_explorer: true,
-										icon_lg: icons.folder,
-										contains: []
-									}
-								]
-							}
-						]
+						contains: []
 					},
 					{
 						id: nanoGenId(),
 						title: 'really cool folder',
-						child_namespace: 'yep-its-cool',
-						parent_namespace: 'desktop',
+						child_namespace: 'yep-itsss-cool',
+						parent_namespace: 'lol-cool-programs',
 						file_type: 'FOLDER',
 						show_on_sidebar: false,
 						show_in_explorer: true,
