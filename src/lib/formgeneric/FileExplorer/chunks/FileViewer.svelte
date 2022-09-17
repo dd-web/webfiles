@@ -1,12 +1,16 @@
 <script>
+	import { fileSystemState } from '$stores/filesystem';
+	import { onMount } from 'svelte';
 	import FileItem from './FileItem.svelte';
 
-	export let files = [];
+	onMount(() => {});
 </script>
 
 <div class="file-viewer">
-	{#each files as file, ix (file.id)}
-		<FileItem fileIx={ix} {file} />
+	{#each $fileSystemState.contains as file, ix (file.id)}
+		{#if file.show_in_explorer}
+			<FileItem fileIx={ix} {file} />
+		{/if}
 	{/each}
 </div>
 

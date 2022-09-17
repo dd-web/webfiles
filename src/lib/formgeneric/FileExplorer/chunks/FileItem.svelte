@@ -1,7 +1,12 @@
 <script>
 	import { writable } from 'svelte/store';
+	import { fileSystemState } from '$stores/filesystem';
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
+	import { onMount, onDestroy } from 'svelte';
 
+	/**
+	 * Explorer item source/target drag operation state
+	 */
 	const source = writable(null);
 	const target = writable(null);
 	const isDragging = writable(false);
@@ -12,12 +17,25 @@
 
 	const internalDataType = 'apsys/systruct';
 
+	/** Props */
+
+	/**
+	 * File - a single item contained in the virtual 'hard drive' filesystem
+	 * which may have contents of it's own
+	 */
 	export let file = {
 		id: 0,
 		files: [],
 		title: 'New Folder'
 	};
 
+	const onClick = (id) => {
+		fileSystemState.cd(id);
+	};
+
+	/**
+	 * Index of the current file
+	 */
 	export let fileIx = 0;
 
 	const onDragOver = (e) => {
@@ -69,14 +87,18 @@
 	};
 
 	const onDragStart = (e) => {
+		console.log('drag started');
 		source.set(file.id);
 		isDragging.set(true);
 		e.dataTransfer.setData(internalDataType, e.target.dataset.value);
 		e.dataTransfer.effectAllowed = 'move';
 	};
+
+	onMount(() => {});
 </script>
 
 <div
+	on:click={() => onClick(file.id)}
 	on:drop={onDroppedOn}
 	on:dragover={onDragOver}
 	on:dragstart={onDragStart}
@@ -93,7 +115,7 @@
 	<div class="icon">
 		<FolderIcon />
 	</div>
-	<p>{file.title}</p>
+	<p class="text-center">{file.title}</p>
 </div>
 
 <style lang="postcss">
@@ -120,7 +142,7 @@
 		}
 
 		p {
-			@apply pointer-events-none;
+			@apply pointer-events-none text-center;
 		}
 	}
 </style>
