@@ -1,6 +1,7 @@
 <script>
 	import { clickOutside } from '$lib/custom_actions';
 	import { slide } from 'svelte/transition';
+	import { createSystemFile } from '$controller/controller';
 
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 
@@ -12,6 +13,7 @@
 
 	const handleNewFolder = () => {
 		console.log('make new folder');
+		createSystemFile('FOLDER', 'New Folder');
 	};
 </script>
 

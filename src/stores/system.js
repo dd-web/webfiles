@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
 import { all } from '$root/supabaseClient';
-import { getItemChildren } from '$controller/controller';
+import { getItemChildren, getItem } from '$controller/controller';
 
 /** State stores */
 
@@ -51,6 +51,7 @@ export const currentDirectoryChildren = writable([]);
 
 /**
  * Sets the store value for the list of raw files data from the api
+ *
  * @param {SystemFile[]} data - list of file items from the api
  */
 export function setSystemFiles(data) {
@@ -59,6 +60,7 @@ export function setSystemFiles(data) {
 
 /**
  * Makes and returns a copy of the raw files data
+ *
  * @returns {SystemFile[]}
  */
 export function getSystemFiles() {
@@ -67,8 +69,19 @@ export function getSystemFiles() {
 }
 
 /**
+ * makes and returns a copy of the root system state
+ *
+ * @returns {SystemFile}
+ */
+export function getExplorerTemplate() {
+	let template = get(explorer);
+	return template;
+}
+
+/**
  * Fetches the initial data from the server and formats it
  * for the default explorer and sidebar views
+ *
  * @returns {void}
  */
 export async function init() {
@@ -78,14 +91,36 @@ export async function init() {
 		const data = await all();
 		setSystemFiles(data);
 
-		let defaultDir = get(explorer);
+		let defaultDir = getExplorerTemplate();
 		let rootItems = getItemChildren(defaultDir.id);
 
 		currentDirectory.set(defaultDir);
 		currentDirectoryChildren.set(rootItems);
+	} catch (error) {
+		console.error(error);
+	} finally {
+		loading.set(false);
+	}
+}
 
-		console.log('default dir', defaultDir);
-		console.log('root items', rootItems);
+/**
+ * Ensures the data in current directory/children is up to date
+ * on the view.
+ * @returns {void}
+ */
+export async function resyncData() {
+	try {
+		loading.set(true);
+
+		const data = await all();
+		setSystemFiles(data);
+
+		let insideDir = get(currentDirectory);
+		let updatedDir = getItem(insideDir.id);
+		currentDirectory.set(updatedDir);
+
+		let rootItems = getItemChildren(updatedDir.id);
+		currentDirectoryChildren.set(rootItems);
 	} catch (error) {
 		console.error(error);
 	} finally {

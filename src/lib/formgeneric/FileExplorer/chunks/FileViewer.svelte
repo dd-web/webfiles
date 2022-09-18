@@ -2,7 +2,7 @@
 	import FileItem from './FileItem.svelte';
 
 	export let files = [];
-	export let directory = {};
+	export let directory;
 </script>
 
 <div class="file-viewer">

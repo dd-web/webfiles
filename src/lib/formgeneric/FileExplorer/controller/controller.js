@@ -1,7 +1,15 @@
-import { writable, get } from 'svelte/store';
-import { getSystemFiles, currentDirectory, currentDirectoryChildren, loading } from '$root/stores/system';
-import { createNavigationLog } from '$stores/navigation';
-// import { all } from '$root/supabaseClient';
+import { get } from 'svelte/store';
+import {
+	getSystemFiles,
+	currentDirectory,
+	currentDirectoryChildren,
+	getExplorerTemplate,
+	resyncData,
+	loading
+} from '$root/stores/system';
+import { createNavLog, getNavLast, getNavLogs, getLastLogSkipDir } from '$stores/navigation';
+import { create } from '$root/supabaseClient';
+import { allWhitespaceInbetween } from '$lib/regexlib';
 
 /**
  *
@@ -39,7 +47,10 @@ export function getItemChildren(id = '$ROOT$') {
  * @returns {SystemFile}
  */
 export function getItem(id = '$ROOT') {
-	if (!typeof id === 'string') throw new Error('ID must be of type string.');
+	if (!id || id === '$ROOT$' || !typeof id === 'string') {
+		let root = getExplorerTemplate();
+		return root;
+	}
 
 	let items = getSystemFiles();
 	let found = [...items].filter((file) => file.id === id)[0];
@@ -70,9 +81,61 @@ export function setupView(id = '$ROOT$') {
 export function changeDirectory(direction = 'FORWARD', id = '$ROOT$') {
 	loading.set(true);
 	let currentDir = get(currentDirectory);
-	createNavigationLog(direction, id, currentDir.id);
+
+	createNavLog(direction, id, currentDir.id);
 	setupView(id);
 	loading.set(false);
+
+	// let last = getNavLast();
+	// let logList = getNavLogs();
+
+	// console.log('last', last);
+	// console.log('list', logList);
+}
+
+/**
+ * Reverses the last navigation made
+ *
+ * @returns {void}
+ */
+export function navBack() {
+	const log = getLastLogSkipDir('BACK');
+	changeDirectory('BACK', log.from);
+}
+
+/**
+ * Creates a new system file
+ *
+ * @param {FileType} type
+ */
+export async function createSystemFile(type, title) {
+	const inside = get(currentDirectory);
+	const formattedTitle = namespaceFromTitle(title);
+
+	let file = {
+		title: formattedTitle,
+		child_namespace: 'new-folder',
+		parent_namespace: inside.child_namespace,
+		file_type: type,
+		parent_id: inside.id
+	};
+
+	const res = await create(file);
+	await resyncData();
+}
+
+/**
+ * Replaces all whitespace in the string with dashes
+ * and makes the entire string lower-cased.
+ *
+ * @param {string} title title of the system file
+ * @returns {string}
+ */
+export function namespaceFromTitle(title = '') {
+	const lowercased = title.toLocaleLowerCase();
+	const noWhitespace = lowercased.replace(allWhitespaceInbetween, '-');
+	console.log('no whitespace', noWhitespace);
+	return noWhitespace;
 }
 
 /**
@@ -110,5 +173,6 @@ export function findDeep(items, id) {
 
 /**
  * @typedef {System.SystemFile} SystemFile
+ * @typedef {System.FileTypeStrings} FileType
  * @typedef {System.NavDirectionStrings} Directions
  */

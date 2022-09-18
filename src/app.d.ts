@@ -17,6 +17,13 @@ declare namespace System {
 		update: import('svelte/store').Writable<SystemFile[]>['update'];
 	};
 
+	type Log = {
+		index: number;
+		next: number;
+		last: number;
+		at: Date | string;
+	};
+
 	enum FileTypes {
 		'FOLDER',
 		'SHORTCUT',
@@ -71,11 +78,11 @@ declare namespace System {
 		};
 	}
 
-	type ActionLog = {
-		index: number;
+	interface NavLog extends Log {
 		direction: NavDirectionStrings;
 		to: string;
 		from: string;
-		at: Date | string;
-	};
+	}
+
+	interface ActionLog extends Log {}
 }

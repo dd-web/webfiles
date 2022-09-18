@@ -1,4 +1,5 @@
 <script>
+	// components
 	import ToolbarButton from '$lib/shared/ToolbarButton.svelte';
 	import ToolbarNewMenu from './ToolbarNewMenu.svelte';
 	import HeaderNav from './HeaderNav.svelte';
@@ -11,6 +12,8 @@
 	import TrashIcon from '$lib/shared/svg/TrashIcon.svelte';
 	import AngleDown from '$lib/shared/svg/AngleDown.svelte';
 	import PlusIcon from '$lib/shared/svg/PlusIcon.svelte';
+
+	export let directory;
 
 	let toolbarNewMenuVisible = false;
 
@@ -26,6 +29,7 @@
 </script>
 
 <div class="explorer-header">
+	<p>{directory.title}</p>
 	<ul class="tools">
 		<li>
 			<ToolbarButton handler={toggleNewMenu} class="flex items-center h-10">
@@ -69,7 +73,7 @@
 		<i />
 	</ul>
 
-	<HeaderNav />
+	<HeaderNav {directory} />
 </div>
 
 <style lang="postcss">

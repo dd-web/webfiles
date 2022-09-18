@@ -1,10 +1,42 @@
 import { writable, get } from 'svelte/store';
 
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+/** State stores */
+
 /** History of all our actions throughout the session */
-const log = writable([]);
+const logs = writable([]);
 
 /** Most recent action */
 const last = writable(null);
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+/** State manipulation methods */
 
 /**
  *
@@ -15,25 +47,79 @@ export function createLog(type, details) {
 	if (!actions.includes(type)) throw new Error('Cannot create action log for unknown action');
 
 	let lastAction = get(last);
-	let currentLogs = get(log);
+	let currentLogs = get(logs);
+
+	let index = !lastAction ? 0 : lastAction.index + 1;
 
 	let newLog = {
-		index: lastAction && lastAction?.index ? lastAction.index + 1 : 0,
+		index: index,
+		last: index - 1,
+		next: index + 1,
 		action: type,
-		at: new Date(),
+		at: new Date()[Symbol.toPrimitive]('string'),
 		details: details
 	};
 
-	currentLogs.set([...currentLogs, lastAction]);
+	let newLogList = lastAction === null ? [] : [...currentLogs, lastAction];
+
+	currentLogs.set(newLogList);
 	lastAction.set(newLog);
 
 	return newLog;
 }
 
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+/** defaults */
+
 export const actions = ['CREATE', 'UPDATE', 'DELETE'];
 
-export { log as actionLog };
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+/** exports  */
+
+export { logs as actionLog };
 export { last as actionLast };
+
+/**
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
+
+/** types */
 
 /**
  * @typedef {System.ActionTypeStrings} Action

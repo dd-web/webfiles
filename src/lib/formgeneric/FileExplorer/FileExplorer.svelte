@@ -18,7 +18,7 @@
 </script>
 
 <section>
-	<Header />
+	<Header directory={$currentDirectory} />
 	<SideBar />
 	<FileViewer files={$currentDirectoryChildren} directory={$currentDirectory} />
 </section>

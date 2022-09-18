@@ -9,7 +9,7 @@
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 
 	/** props */
-	export let file, index;
+	export let file, index, directory;
 
 	/**
 	 * Explorer item source/target drag operation state
@@ -25,7 +25,7 @@
 	const internalDataType = 'files/systruct';
 
 	const onClick = (id) => {
-		console.log('clicked item', id);
+		console.log('clicked item', id, 'inside directory:', directory);
 		changeDirectory('FORWARD', id);
 	};
 
@@ -106,7 +106,7 @@
 	<div class="icon">
 		<FolderIcon />
 	</div>
-	<p class="text-center px-2 overflow-hidden text-ellipsis">{file.title}</p>
+	<p class="text-center px-2 overflow-hidden whitespace-nowrap text-ellipsis">{file.title}</p>
 </div>
 
 <style lang="postcss">

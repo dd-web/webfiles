@@ -1,13 +1,16 @@
 <script>
+	import { navBack } from '$controller/controller';
+
+	// components
 	import ArrowDown from '$lib/shared/svg/ArrowDown.svelte';
 	import AngleDown from '$lib/shared/svg/AngleDown.svelte';
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 
-	let currentLocation = 'some folder';
+	export let directory;
 </script>
 
 <div class="tool-nav">
-	<button class="h-8 w-8 p-2">
+	<button on:click={navBack} class="h-8 w-8 p-2">
 		<ArrowDown class="rotate-90 h-full w-full" />
 	</button>
 	<button disabled class="h-8 w-8 p-2">
@@ -21,7 +24,7 @@
 			<AngleDown class="-rotate-90" />
 		</div>
 		<span>
-			{currentLocation}
+			{directory?.title}
 		</span>
 	</div>
 </div>
