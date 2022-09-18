@@ -171,14 +171,11 @@ export function getLocation(item) {
 	return location;
 }
 
+/**
+ * @type {System.FileTypeStrings}
+ */
 export const FILE_TYPES = {
-	['FOLDER']: {
-		icons: {
-			large: icons.folder,
-			can_contain: true,
-			can_sidebar: true
-		}
-	},
+	['FOLDER']: {},
 	['SHORTCUT']: {},
 	['MEDIA']: {},
 	['BINARY']: {},
@@ -188,7 +185,8 @@ export const FILE_TYPES = {
 /**
  * This is relatable to C: drive - these are the default starting
  * items, since this immitates a filesystem
- * @type {import('$stores/filesystem').SystemFile[]}
+ * @type {System.SystemFile[]}
+ *
  */
 export const rootDefault = [
 	{
@@ -297,3 +295,84 @@ export const rootDefault = [
 ];
 
 export const root = {};
+
+export const formatSystem = (data) => {
+	const dataCopy = data;
+
+	let rootMimic = {
+		id: '$ROOT$',
+		title: 'Root',
+		child_namespace: '$ROOT$',
+		parent_namespace: null,
+		file_type: 'SYSTEM',
+		show_in_explorer: false,
+		show_on_sidebar: false,
+		contains: []
+	};
+
+	for (const file of data) {
+		if (file.parent_id === '$ROOT$') {
+			rootMimic.contains = [...rootMimic.contains, file];
+		}
+	}
+
+	/**
+	 * Find and return all files with the supplied parent_id (or parent_namespace)
+	 *
+	 * @param {String} id items id you want the children of, they will have this value as their 'parent_id' field
+	 * @param {String?} fileNamespace if for some reason we fail to filter by id, or things get complicated - we can go by namespaces
+	 * @returns {System.SystemFile[] | []}
+	 */
+	function findChildren(id = '$ROOT$', fileNamespace = null) {
+		let found,
+			verify = [];
+
+		if (typeof id === 'string') {
+			found = [...dataCopy].filter((f) => f.parent_id === id);
+		}
+
+		// if we failed populating by parent id we can try by namespace
+		if (found.length === 0 && fileNamespace) {
+			verify = [...dataCopy].filter((f) => f.parent_namespace === fileNamespace);
+			if (verify.length === found.length) return found;
+		}
+
+		return found;
+	}
+
+	/**
+	 * recursive closure to populate
+	 * pass in the entire FILE to populate the children of
+	 * return ONLY the children of that file
+	 */
+	function populateChildren(fillItem) {
+		const subItems = findChildren(fillItem?.id, fillItem?.child_namespace);
+
+		console.log('child items', subItems);
+
+		if (!subItems || subItems?.length === 0) return [];
+
+		for (const file of subItems) {
+			populateChildren(file);
+		}
+
+		// for (const file of fillItem?.contains) {
+		// 	let filesChildren = [...dataCopy].filter((f) => f.parent_id === file.id);
+		// 	file['contains'] = [...filesChildren];
+		// 	itemsChildren = [...itemsChildren, file];
+		// 	populateChildren(file);
+		// }
+
+		// function loopChildren(arr) {
+		// 	if (arr instanceof Array) {
+		// 		for (const item of arr) {
+		// 		}
+		// 	}
+		// }
+	}
+
+	const newData = populateChildren(rootMimic);
+	console.log('newData', newData);
+
+	console.log('rootMimic so far:', rootMimic);
+};

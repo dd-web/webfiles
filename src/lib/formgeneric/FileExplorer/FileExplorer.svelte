@@ -1,26 +1,26 @@
 <script>
 	import { onMount, onDestroy } from 'svelte';
-
-	import { folderTemplate, rootDefault, internalRoot } from '$lib/generics';
-	import { fileSystemState } from '$stores/filesystem';
+	import { currentDirectory, currentDirectoryChildren, init } from '$root/stores/system';
 
 	import SideBar from './chunks/SideBar.svelte';
 	import Header from './chunks/Header.svelte';
 	import FileViewer from './chunks/FileViewer.svelte';
 
-	const unsubscribeHistory = fileSystemState.history((logs) => {
-		console.log('history stack', logs);
+	// const unsubscribeHistory = fileSystemState.history((logs) => {
+	// 	console.log('history stack', logs);
+	// });
+
+	onMount(async () => {
+		await init();
 	});
 
-	onMount(() => {});
-
-	onDestroy(unsubscribeHistory);
+	// onDestroy(unsubscribeHistory);
 </script>
 
 <section>
 	<Header />
 	<SideBar />
-	<FileViewer />
+	<FileViewer files={$currentDirectoryChildren} directory={$currentDirectory} />
 </section>
 
 <style lang="postcss">

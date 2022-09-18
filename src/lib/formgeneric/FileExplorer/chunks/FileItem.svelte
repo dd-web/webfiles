@@ -1,8 +1,15 @@
 <script>
 	import { writable } from 'svelte/store';
-	import { fileSystemState } from '$stores/filesystem';
-	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 	import { onMount, onDestroy } from 'svelte';
+
+	/** control method imports */
+	import { changeDirectory } from '$controller/controller';
+
+	/** default icons */
+	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
+
+	/** props */
+	export let file, index;
 
 	/**
 	 * Explorer item source/target drag operation state
@@ -15,28 +22,12 @@
 	$: useDragClass = $source === file.id && $isDragging;
 	$: useDropClass = !$isDragging && $target === file.id && $isDraggedOver;
 
-	const internalDataType = 'apsys/systruct';
-
-	/** Props */
-
-	/**
-	 * File - a single item contained in the virtual 'hard drive' filesystem
-	 * which may have contents of it's own
-	 */
-	export let file = {
-		id: 0,
-		files: [],
-		title: 'New Folder'
-	};
+	const internalDataType = 'files/systruct';
 
 	const onClick = (id) => {
-		fileSystemState.cd(id);
+		console.log('clicked item', id);
+		changeDirectory('FORWARD', id);
 	};
-
-	/**
-	 * Index of the current file
-	 */
-	export let fileIx = 0;
 
 	const onDragOver = (e) => {
 		e.preventDefault();
@@ -106,7 +97,7 @@
 	on:dragenter={onDragEnter}
 	on:dragleave={onDragLeave}
 	draggable="true"
-	id="file-{fileIx}"
+	id="file-{index}"
 	class="file"
 	class:useDragClass
 	class:useDropClass
