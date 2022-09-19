@@ -1,6 +1,4 @@
-
 export function clickOutside(node) {
-
 	const handleClick = (event) => {
 		if (!node.contains(event.target)) {
 			node.dispatchEvent(new CustomEvent('outclick'));
@@ -14,4 +12,9 @@ export function clickOutside(node) {
 			document.removeEventListener('click', handleClick, true);
 		}
 	};
+}
+
+export function autofocusInput(node) {
+	node.focus();
+	node.select();
 }

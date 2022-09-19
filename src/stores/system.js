@@ -10,6 +10,12 @@ import { getItemChildren, getItem } from '$controller/controller';
 export const loading = writable(false);
 
 /**
+ * Editing state is on only while user is actively in an explicit edit mode
+ * on any of the internal components
+ */
+export const editing = writable(false);
+
+/**
  * The raw data received from the server - serves as a sort of dictionary
  * for us to copy data from in order to set/update components
  *

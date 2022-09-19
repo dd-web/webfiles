@@ -1,15 +1,18 @@
 <script>
-	import { writable } from 'svelte/store';
 	import { onMount, onDestroy } from 'svelte';
+	import { writable } from 'svelte/store';
+	import { createEventDispatcher } from 'svelte';
+	import { fadeScale } from '$root/lib/custom_animations';
+	import { autofocusInput } from '$root/lib/custom_actions';
 
 	/** control method imports */
 	import { changeDirectory } from '$controller/controller';
 
-	/** default icons */
+	/** components */
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 
 	/** props */
-	export let file, index, directory;
+	export let file, index, directory, selected, editAllowed;
 
 	/**
 	 * Explorer item source/target drag operation state
@@ -21,10 +24,39 @@
 
 	$: useDragClass = $source === file.id && $isDragging;
 	$: useDropClass = !$isDragging && $target === file.id && $isDraggedOver;
+	$: isSelected = [...selected].includes(file.id);
+
+	let editingFilename = false;
+
+	$: {
+		if (!editAllowed) {
+			editingFilename = false;
+		}
+	}
+
+	let filenameModified = file.title;
+
+	const dispatch = createEventDispatcher();
 
 	const internalDataType = 'files/systruct';
 
-	const onClick = (id) => {
+	const handleSelect = () => {
+		dispatch('selectFile', {
+			file: file,
+			index: index
+		});
+	};
+
+	const handleSaveChanges = () => {
+		console.log('save');
+	};
+
+	const enableEditing = () => {
+		if (!isSelected) return;
+		editingFilename = true;
+	};
+
+	const onDoubleClick = (id) => {
 		console.log('clicked item', id, 'inside directory:', directory);
 		changeDirectory('FORWARD', id);
 	};
@@ -32,13 +64,6 @@
 	const onDragOver = (e) => {
 		e.preventDefault();
 		return false;
-		// target.set(file.id);
-		// isDraggedOver.set(true);
-		// console.log('source', $source);
-		// console.log('isDragging', $isDragging);
-		// console.log('useDragClass', useDragClass);
-		// console.log('file.id', file.id);
-		// e.preventDefault();
 	};
 
 	const onDragEnter = (e) => {
@@ -89,34 +114,54 @@
 </script>
 
 <div
-	on:click={() => onClick(file.id)}
+	in:fadeScale={{ duration: 800 }}
+	on:click|stopPropagation={handleSelect}
+	on:dblclick={() => onDoubleClick(file.id)}
 	on:drop={onDroppedOn}
 	on:dragover={onDragOver}
 	on:dragstart={onDragStart}
 	on:dragend={onDragEnd}
 	on:dragenter={onDragEnter}
 	on:dragleave={onDragLeave}
-	draggable="true"
+	draggable={!editingFilename && selected.length <= 1}
 	id="file-{index}"
 	class="file"
 	class:useDragClass
 	class:useDropClass
+	class:isSelected
 	data-value={file.id}
 >
 	<div class="icon">
 		<FolderIcon />
 	</div>
-	<p class="text-center px-2 overflow-hidden whitespace-nowrap text-ellipsis">{file.title}</p>
+	{#if editingFilename}
+		<input use:autofocusInput bind:value={filenameModified} type="text" />
+	{:else}
+		<p on:click={enableEditing} class="text-center px-2 overflow-hidden whitespace-nowrap text-ellipsis">
+			{file.title}
+		</p>
+	{/if}
 </div>
 
 <style lang="postcss">
 	.file {
-		@apply h-full w-full flex flex-col justify-center border-sky-100 border-opacity-0 border-2 border-dotted items-center rounded-md transition-all duration-200;
+		@apply h-full w-full flex flex-col justify-center border-sky-100 border-opacity-0 border-2 border-dotted items-center rounded-md transition-all duration-150;
 		@apply hover:bg-black hover:bg-opacity-20;
 
 		.icon {
 			@apply h-20 w-20;
 		}
+
+		input {
+			@apply w-auto mx-1 text-black outline-none border-2 border-transparent;
+			@apply focus-within:border-sky-400;
+			align-self: normal;
+		}
+	}
+
+	.isSelected {
+		@apply bg-white bg-opacity-25;
+		@apply hover:bg-opacity-5 hover:bg-white;
 	}
 
 	.useDragClass {

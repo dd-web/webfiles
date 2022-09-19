@@ -1,5 +1,6 @@
 <script>
 	import { navBack } from '$controller/controller';
+	import { currentDirectory } from '$root/stores/system';
 
 	// components
 	import ArrowDown from '$lib/shared/svg/ArrowDown.svelte';
@@ -10,7 +11,7 @@
 </script>
 
 <div class="tool-nav">
-	<button on:click={navBack} class="h-8 w-8 p-2">
+	<button disabled={!$currentDirectory.parent_namespace} on:click={navBack} class="h-8 w-8 p-2">
 		<ArrowDown class="rotate-90 h-full w-full" />
 	</button>
 	<button disabled class="h-8 w-8 p-2">
