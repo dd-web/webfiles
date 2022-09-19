@@ -43,3 +43,23 @@ export const create = async (obj) => {
 
 	return res;
 };
+
+export const update = async (obj) => {
+	const res = await supabase
+		.from('system_file')
+		.update({
+			title: obj.title,
+			parent_id: obj.parent_id,
+			child_namespace: obj.child_namespace,
+			parent_namespace: obj.parent_namespace
+		})
+		.eq('id', obj.id)
+		.then(({ data }) => {
+			return data;
+		})
+		.catch((err) => {
+			console.error('Supabase error! (attempting to update an existing file)', err);
+		});
+
+	return res;
+};

@@ -6,7 +6,7 @@
 	import { autofocusInput } from '$root/lib/custom_actions';
 
 	/** control method imports */
-	import { changeDirectory } from '$controller/controller';
+	import { changeDirectory, updateSystemFile } from '$controller/controller';
 
 	/** components */
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
@@ -47,8 +47,11 @@
 		});
 	};
 
-	const handleSaveChanges = () => {
-		console.log('save');
+	const handleSaveChanges = async () => {
+		let fileData = { title: filenameModified };
+
+		const result = await updateSystemFile(file.id, fileData);
+		console.log('save', result);
 	};
 
 	const enableEditing = () => {
@@ -135,7 +138,7 @@
 		<FolderIcon />
 	</div>
 	{#if editingFilename}
-		<input use:autofocusInput bind:value={filenameModified} type="text" />
+		<input on:blur={handleSaveChanges} use:autofocusInput bind:value={filenameModified} type="text" />
 	{:else}
 		<p on:click={enableEditing} class="text-center px-2 overflow-hidden whitespace-nowrap text-ellipsis">
 			{file.title}

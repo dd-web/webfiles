@@ -8,7 +8,7 @@ import {
 	loading
 } from '$root/stores/system';
 import { createNavLog, getNavLast, getNavLogs, getLastLogSkipDir } from '$stores/navigation';
-import { create } from '$root/supabaseClient';
+import { create, update } from '$root/supabaseClient';
 import { allWhitespaceInbetween } from '$lib/regexlib';
 
 /**
@@ -121,6 +121,22 @@ export async function createSystemFile(type, title) {
 	};
 
 	const res = await create(file);
+	await resyncData();
+}
+
+/**
+ *
+ * @param {*} id
+ * @param {*} data
+ */
+export async function updateSystemFile(id, data) {
+	let file = getItem(id);
+
+	for (const field in data) {
+		file[field] = data[field];
+	}
+
+	const res = await update(file);
 	await resyncData();
 }
 
