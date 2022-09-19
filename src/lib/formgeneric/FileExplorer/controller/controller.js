@@ -152,7 +152,6 @@ export async function updateSystemFile(id, data) {
 export function namespaceFromTitle(title = '') {
 	const lowercased = title.toLocaleLowerCase();
 	const noWhitespace = lowercased.replace(allWhitespaceInbetween, '-');
-	console.log('no whitespace', noWhitespace);
 	return noWhitespace;
 }
 
