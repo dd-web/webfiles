@@ -112,6 +112,10 @@ export async function init() {
 /**
  * Ensures the data in current directory/children is up to date
  * on the view.
+ *
+ * this needs to be updated to modify the data of each child item instead
+ * of replacing all of it - it's causing the order of items to change after
+ * updating an item.
  * @returns {void}
  */
 export async function resyncData() {

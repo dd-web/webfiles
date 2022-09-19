@@ -125,9 +125,11 @@ export async function createSystemFile(type, title) {
 }
 
 /**
+ * Update an existing system file with specified field values
+ * needs field validation
  *
- * @param {*} id
- * @param {*} data
+ * @param {string} id of the file we want to update
+ * @param {SystemFile} data with the fields updated to what we want them to be
  */
 export async function updateSystemFile(id, data) {
 	let file = getItem(id);
