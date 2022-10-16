@@ -1,7 +1,7 @@
 <script>
 	import { clickOutside } from '$lib/custom_actions';
 	import { slide } from 'svelte/transition';
-	import { createSystemFile } from '$controller/controller';
+	import { createSystemFile } from '$root/lib/FileExplorer/controller/controller';
 
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 

@@ -1,5 +1,5 @@
 <script>
-	import { navBack } from '$controller/controller';
+	import { navBack } from '$root/lib/FileExplorer/controller/controller';
 	import { currentDirectory } from '$root/stores/system';
 
 	// components

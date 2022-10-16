@@ -1,14 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
+import { catchError } from './lib/helpers/utils';
 import { setSystemFiles, resyncData } from './stores/system';
+import { getCurrentUser } from './stores/user';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export const all = async () => {
+export const allUserFiles = async () => {
 	const res = await supabase
-		.from('system_file')
+		.from('user_file')
 		.select('*')
 		.then(({ data }) => {
 			return data;
@@ -20,16 +22,37 @@ export const all = async () => {
 	return res;
 };
 
-export const create = async (obj) => {
-	const res = await supabase
+/**
+ * Retreive all system files (files that define the structure of the file system)
+ * in order to build the rest of the system around them with the users own files
+ *
+ * @returns {System.SystemFile[]} list of all system files
+ */
+export const allSystemFiles = async () => {
+	const files = await supabase
 		.from('system_file')
+		.select('*')
+		.then(({ data }) => {
+			return data;
+		})
+		.catch(catchError);
+
+	return files;
+};
+
+export const create = async (obj) => {
+	let userData = getCurrentUser();
+
+	const res = await supabase
+		.from('user_file')
 		.insert([
 			{
 				title: obj.title,
 				child_namespace: obj.child_namespace,
 				parent_namespace: obj.parent_namespace,
 				file_type: obj.file_type,
-				parent_id: obj.parent_id
+				parent_id: obj.parent_id,
+				user_id: userData.id
 			}
 		])
 		.then((res) => {
@@ -45,13 +68,16 @@ export const create = async (obj) => {
 };
 
 export const update = async (obj) => {
+	let userData = getCurrentUser();
+
 	const res = await supabase
-		.from('system_file')
+		.from('user_file')
 		.update({
 			title: obj.title,
 			parent_id: obj.parent_id,
 			child_namespace: obj.child_namespace,
-			parent_namespace: obj.parent_namespace
+			parent_namespace: obj.parent_namespace,
+			user_id: userData.id
 		})
 		.eq('id', obj.id)
 		.then(({ data }) => {

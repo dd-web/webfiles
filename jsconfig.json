@@ -6,9 +6,10 @@
 			"$root": ["src/"],
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
+			"$stores": ["src/stores"],
 			"$stores/*": ["src/stores/*"],
-			"$controller": ["src/lib/formgeneric/FileExplorer/controller/"],
-			"$controller/*": ["src/lib/formgeneric/FileExplorer/controller/*"]
+			"$controller": ["src/lib/FileExplorer/controller"],
+			"$controller/*": ["src/lib/FileExplorer/controller/*"]
 		},
 		"allowJs": true,
 		"checkJs": false,

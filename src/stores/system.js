@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
-import { all } from '$root/supabaseClient';
-import { getItemChildren, getItem } from '$controller/controller';
+import { allUserFiles, allSystemFiles } from '$root/supabaseClient';
+import { getItemChildren, getItem } from '$root/lib/FileExplorer/controller/controller';
 
 /** State stores */
 
@@ -94,14 +94,22 @@ export async function init() {
 	try {
 		loading.set(true);
 
-		const data = await all();
-		setSystemFiles(data);
-
 		let defaultDir = getExplorerTemplate();
-		let rootItems = getItemChildren(defaultDir.id);
-
 		currentDirectory.set(defaultDir);
-		currentDirectoryChildren.set(rootItems);
+
+		await resyncData();
+
+		// const data = await allUserFiles();
+		// console.log('all USER files', data);
+
+		// const allSysFiles = await allSystemFiles();
+		// console.log('all SYS files', allSysFiles);
+
+		// setSystemFiles(data);
+
+		// let rootItems = getItemChildren(defaultDir.id);
+
+		// currentDirectoryChildren.set(rootItems);
 	} catch (error) {
 		console.error(error);
 	} finally {
@@ -122,8 +130,15 @@ export async function resyncData() {
 	try {
 		loading.set(true);
 
-		const data = await all();
-		setSystemFiles(data);
+		const data = await allUserFiles();
+		console.log('all USER files', data);
+
+		const allSysFiles = await allSystemFiles();
+		console.log('all SYS files', allSysFiles);
+
+		let aggregate = [...data, ...allSysFiles];
+
+		setSystemFiles(aggregate);
 
 		let insideDir = get(currentDirectory);
 		let updatedDir = getItem(insideDir.id);

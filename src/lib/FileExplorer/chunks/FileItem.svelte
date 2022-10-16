@@ -6,7 +6,7 @@
 	import { autofocusInput } from '$root/lib/custom_actions';
 
 	/** control method imports */
-	import { changeDirectory, updateSystemFile } from '$controller/controller';
+	import { changeDirectory, updateSystemFile, moveSystemFile } from '$root/lib/FileExplorer/controller/controller';
 
 	/** components */
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
@@ -88,10 +88,13 @@
 	 * Drop zone handler
 	 * this is a receiver for the currently dragged item to be dropped into
 	 */
-	const onDroppedOn = (e) => {
+	const onDroppedOn = async (e) => {
 		isDragging.set(false);
 		let data = e.dataTransfer.getData(internalDataType);
 		console.log('to be moved:', data, 'to: ', $target);
+
+		await moveSystemFile(data, $target);
+
 		source.set(null);
 		target.set(null);
 		isDraggedOver.set(false);

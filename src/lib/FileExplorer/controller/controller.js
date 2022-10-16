@@ -120,8 +120,7 @@ export async function createSystemFile(type, title) {
 		parent_id: inside.id
 	};
 
-	const res = await create(file);
-	await resyncData();
+	await create(file).then(() => resyncData());
 }
 
 /**
@@ -138,8 +137,29 @@ export async function updateSystemFile(id, data) {
 		file[field] = data[field];
 	}
 
-	const res = await update(file);
-	await resyncData();
+	await update(file).then(() => resyncData());
+}
+
+/**
+ * Move the source file into the destination folder
+ *
+ * @param {String} item item to run the operation on
+ * @param {String} to destination of the item
+ */
+export async function moveSystemFile(item, to) {
+	let operand = getItem(item);
+	let goingTo = getItem(to);
+
+	if (goingTo.file_type !== 'FOLDER') throw Error('Destination is not a folder');
+
+	let newFile = {
+		...operand,
+		id: operand.id,
+		parent_id: goingTo.id,
+		parent_namespace: goingTo.child_namespace
+	};
+
+	await update(newFile).then(() => resyncData());
 }
 
 /**
@@ -159,6 +179,8 @@ export function namespaceFromTitle(title = '') {
  * Recursively walks the branching paths of an object and
  * it's children until it finds what it's looking for, or
  * has searched entirely and has not found it.
+ *
+ * This is good for things like permissions on folders and all their subcontents
  *
  * @param {SystemFile[]} items
  * @param {string} id

@@ -29,7 +29,6 @@
 </script>
 
 <div class="explorer-header">
-	<p>{directory.title}</p>
 	<ul class="tools">
 		<li>
 			<ToolbarButton handler={toggleNewMenu} class="flex items-center h-10">

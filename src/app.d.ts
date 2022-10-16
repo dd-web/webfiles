@@ -85,4 +85,10 @@ declare namespace System {
 	}
 
 	interface ActionLog extends Log {}
+
+	interface User {
+		id: string;
+		email: string;
+		password: string;
+	}
 }
