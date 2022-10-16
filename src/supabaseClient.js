@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { catchError } from './lib/helpers/utils';
+
 import { setSystemFiles, resyncData } from './stores/system';
 import { getCurrentUser } from './stores/user';
 
@@ -16,7 +16,7 @@ export const allUserFiles = async () => {
 			return data;
 		})
 		.catch((err) => {
-			console.error('Supabase error!', err);
+			console.error('Error fetching user files', err);
 		});
 
 	return res;
@@ -35,7 +35,9 @@ export const allSystemFiles = async () => {
 		.then(({ data }) => {
 			return data;
 		})
-		.catch(catchError);
+		.catch((err) => {
+			console.error('Supabase error! (attempting to fetch system files)', err);
+		});
 
 	return files;
 };

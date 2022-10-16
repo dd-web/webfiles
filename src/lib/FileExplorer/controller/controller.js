@@ -113,8 +113,8 @@ export async function createSystemFile(type, title) {
 	const formattedTitle = namespaceFromTitle(title);
 
 	let file = {
-		title: formattedTitle,
-		child_namespace: 'new-folder',
+		title: title,
+		child_namespace: formattedTitle,
 		parent_namespace: inside.child_namespace,
 		file_type: type,
 		parent_id: inside.id

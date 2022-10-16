@@ -1,17 +1,27 @@
 <script>
 	import '../app.css';
 	import { currentUser, getUserProfile } from '$root/stores/user';
+	import { newFolderTitle, userAuth } from '$root/stores/modals';
 	import { onMount } from 'svelte';
 
 	import Header from '$lib/header/Header.svelte';
 	import Footer from '$root/lib/footer/Footer.svelte';
 	import Modal from '$root/lib/shared/Modal.svelte';
 	import UserAuth from '$root/lib/Auth/UserAuth.svelte';
+	import NewFileName from '$root/lib/FileExplorer/chunks/NewFileName.svelte';
 </script>
 
-<!-- <Modal>
-	<UserAuth />
-</Modal> -->
+{#if $newFolderTitle}
+	<Modal>
+		<NewFileName on:close={() => ($newFolderTitle = false)} />
+	</Modal>
+{/if}
+
+{#if $userAuth}
+	<Modal>
+		<UserAuth on:close={() => ($userAuth = false)} />
+	</Modal>
+{/if}
 
 <Header />
 <main>
@@ -21,6 +31,6 @@
 
 <style lang="postcss">
 	main {
-		@apply max-w-7xl mx-auto bg-neutral-800 my-4 h-full p-1;
+		@apply max-w-7xl mx-auto w-full bg-neutral-800 my-4 p-1;
 	}
 </style>

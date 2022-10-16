@@ -133,6 +133,8 @@ export async function resyncData() {
 		const userFiles = await allUserFiles();
 		const allSysFiles = await allSystemFiles();
 
+		if (!userFiles || !allSysFiles) throw new Error('Could not contact server');
+
 		let aggregate = [...userFiles, ...allSysFiles];
 
 		setSystemFiles(aggregate);

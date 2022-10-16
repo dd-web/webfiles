@@ -1,7 +1,8 @@
 <script>
 	import { clickOutside } from '$lib/custom_actions';
 	import { slide } from 'svelte/transition';
-	import { createSystemFile } from '$root/lib/FileExplorer/controller/controller';
+	// import { createSystemFile } from '$root/lib/FileExplorer/controller/controller';
+	import { newFolderTitle } from '$root/stores/modals';
 
 	import FolderIcon from '$lib/shared/svg/FolderIcon.svelte';
 
@@ -13,12 +14,14 @@
 
 	const handleNewFolder = () => {
 		console.log('make new folder');
-		createSystemFile('FOLDER', 'New Folder');
+		$newFolderTitle = true;
+		visible = false;
+		// createSystemFile('FOLDER', 'New Folder');
 	};
 </script>
 
 {#if visible}
-	<ul use:clickOutside on:outclick={handleOutClick} transition:slide|local={{ duration: 300 }}>
+	<ul use:clickOutside on:outclick={handleOutClick} transition:slide|local={{ duration: 150 }}>
 		<li>
 			<button on:click={handleNewFolder} class="group">
 				<div class="icon group-active:opacity-50">

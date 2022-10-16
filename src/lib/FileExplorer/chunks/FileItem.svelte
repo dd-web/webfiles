@@ -58,7 +58,7 @@
 	};
 
 	const onDoubleClick = (id) => {
-		// console.log('clicked item', id, 'inside directory:', directory);
+		console.log('clicked item', id, 'inside directory:', directory);
 		changeDirectory('FORWARD', id);
 	};
 

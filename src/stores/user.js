@@ -57,6 +57,8 @@ export function getCurrentUser() {
 
 export async function getUserProfile() {
 	const { data, error } = await supabase.auth.getSession();
+	console.log('user data', data);
+	if (error) console.log('user error', error);
 
 	const validated = handleError(error);
 	if (!validated) return null;
@@ -146,6 +148,7 @@ export async function registerUser(email, password) {
  * back end to clear the sessions from the database
  */
 export async function signOutUser() {
+	console.log('sign us out');
 	const { error } = await supabase.auth.signOut();
 
 	if (error) console.error('error signing out', error);

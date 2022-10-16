@@ -3,31 +3,38 @@
 @tailwind utilities;
 
 @layer base {
-  h1 {
-    @apply text-4xl;
-  }
+	h1 {
+		@apply text-4xl;
+	}
 
-  h2 {
-    @apply text-3xl;
-  }
+	h2 {
+		@apply text-3xl;
+	}
 
-  h3 {
-    @apply text-2xl;
-  }
+	h3 {
+		@apply text-2xl;
+	}
 
-  h1, h2, h3 {
-    @apply font-bold py-4;
-  }
+	h1,
+	h2,
+	h3 {
+		@apply font-bold py-4;
+	}
 
-  svg {
-    @apply fill-inherit pointer-events-none stroke-inherit transition-all;
-  }
+	svg {
+		@apply fill-inherit pointer-events-none stroke-inherit transition-all;
+	}
 
-  span {
-    @apply transition-all;
-  }
+	span {
+		@apply transition-all;
+	}
 }
 
-html, body {
-  @apply bg-neutral-900 text-gray-200 h-full;
+html,
+body {
+	@apply bg-neutral-900 text-gray-200 h-full;
+}
+
+body {
+	@apply overflow-hidden grid grid-rows-[4rem_1fr_6rem];
 }
