@@ -19,7 +19,7 @@
 	 */
 	const updateSelected = (e) => {
 		$allowEditing = true;
-		$selected = [...$selected, e.detail.file.id];
+		$selected = [e.detail.file.id];
 	};
 
 	/**

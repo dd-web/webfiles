@@ -26,7 +26,7 @@ export const allUserFiles = async () => {
  * Retreive all system files (files that define the structure of the file system)
  * in order to build the rest of the system around them with the users own files
  *
- * @returns {System.SystemFile[]} list of all system files
+ * @returns {Promise<System.SystemFile[]>} list of all system files
  */
 export const allSystemFiles = async () => {
 	const files = await supabase

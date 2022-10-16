@@ -49,9 +49,7 @@
 
 	const handleSaveChanges = async () => {
 		let fileData = { title: filenameModified };
-
-		const result = await updateSystemFile(file.id, fileData);
-		console.log('save', result);
+		await updateSystemFile(file.id, fileData);
 	};
 
 	const enableEditing = () => {
@@ -60,7 +58,7 @@
 	};
 
 	const onDoubleClick = (id) => {
-		console.log('clicked item', id, 'inside directory:', directory);
+		// console.log('clicked item', id, 'inside directory:', directory);
 		changeDirectory('FORWARD', id);
 	};
 

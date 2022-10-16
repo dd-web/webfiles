@@ -130,13 +130,10 @@ export async function resyncData() {
 	try {
 		loading.set(true);
 
-		const data = await allUserFiles();
-		console.log('all USER files', data);
-
+		const userFiles = await allUserFiles();
 		const allSysFiles = await allSystemFiles();
-		console.log('all SYS files', allSysFiles);
 
-		let aggregate = [...data, ...allSysFiles];
+		let aggregate = [...userFiles, ...allSysFiles];
 
 		setSystemFiles(aggregate);
 

@@ -10,7 +10,7 @@
 
 	onMount(() => {
 		$sidebarItemList = sidebarItems();
-		console.log('sidebar items:', $sidebarItemList);
+		// console.log('sidebar items:', $sidebarItemList);
 	});
 </script>
 
