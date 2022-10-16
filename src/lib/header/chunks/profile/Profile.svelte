@@ -1,6 +1,6 @@
 <script>
 	import { currentUser, getUserProfile, currentSession } from '$root/stores/user';
-	import { userAuth } from '$root/stores/modals';
+	import { userAuthWindow } from '$root/stores/modals';
 
 	import { createEventDispatcher } from 'svelte';
 	import { onMount } from 'svelte';
@@ -8,7 +8,7 @@
 
 	import UserCircle from '$lib/shared/svg/UserCircle.svelte';
 
-	let loading = true;
+	let loading = false;
 
 	onMount(async () => {
 		loading = true;
@@ -24,7 +24,7 @@
 
 <div>
 	{#if !$currentUser}
-		<button on:click={() => ($userAuth = true)} class="text-blue-300 hover:underline">Sign in</button>
+		<button on:click={() => ($userAuthWindow = true)} class="text-blue-300 hover:underline">Sign in</button>
 	{:else}
 		<div class="flex items-center">
 			<span class="mr-2 text-zinc-400">{$currentUser?.email.split('@')[0]}</span>
@@ -38,10 +38,5 @@
 <style lang="postcss">
 	div {
 		@apply ml-auto mr-2;
-
-		a {
-			@apply text-blue-300 no-underline;
-			@apply hover:underline;
-		}
 	}
 </style>

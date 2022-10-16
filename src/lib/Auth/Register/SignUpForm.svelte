@@ -1,10 +1,16 @@
 <script>
+	import { clickOutside } from '$lib/custom_actions';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let form, loading;
 	export let submit = () => {},
 		signin = () => {};
 </script>
 
 <form
+	use:clickOutside
+	on:outclick={() => dispatch('cancel')}
 	on:submit|preventDefault={submit}
 	disabled={loading}
 	class="bg-neutral-800 border border-zinc-600 rounded-md flex flex-col p-4 max-w-xs w-full"
@@ -56,7 +62,7 @@
 
 		<!-- buttons  -->
 		<div class=" mt-12">
-			<button class="bg-blue-800 hover:bg-blue-600 active:opacity-75 w-full">Register</button>
+			<button type="submit" class="bg-blue-800 hover:bg-blue-600 active:opacity-75 w-full">Register</button>
 		</div>
 	{/if}
 </form>

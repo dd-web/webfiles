@@ -1,4 +1,6 @@
 <script>
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	import { loginUser, registerUser } from '$root/stores/user';
 
 	import LoginForm from './Login/LoginForm.svelte';
@@ -6,61 +8,48 @@
 
 	let loading = false;
 
-	let loginForm = {};
-	let signupForm = {};
+	let form = {};
+	let endpointFn = loginUser;
+	let actionComponent = LoginForm;
 
-	const clearForms = () => {
-		loginForm = {};
-		signupForm = {};
-	};
-
-	let action = 'login';
-
-	/** Login handler */
-	const handleLogin = async () => {
+	const handleSubmit = async () => {
 		loading = true;
-		const { email, password } = loginForm;
+		const { email, password } = form;
 
-		await loginUser(email, password)
+		await endpointFn(email, password)
 			.then(() => {
-				console.log('Logged in');
+				console.log(operation + ' complete');
 			})
 			.catch((err) => {
-				console.log('couldnt log in', err);
+				console.log('couldnt complete operation', err);
 			})
 			.finally(() => {
 				loading = false;
 			});
 	};
 
-	/** Registration handler */
-	const handleRegister = async () => {
-		loading = true;
-		const { email, password } = signupForm;
-
-		await registerUser(email, password)
-			.then(() => {
-				console.log('Registered');
-			})
-			.catch((err) => {
-				console.log('couldnt register new user', err);
-			})
-			.finally(() => {
-				loading = false;
-			});
+	/**
+	 * updates state to either either component config
+	 */
+	const toRegisterComponent = () => {
+		form = {};
+		endpointFn = registerUser;
+		actionComponent = SignUpForm;
 	};
 
-	/** Changes action to login or register */
-	const handleSwitchAction = () => {
-		action = action === 'login' ? 'signup' : 'login';
-		clearForms();
+	const toLoginComponent = () => {
+		form = {};
+		endpointFn = loginUser;
+		actionComponent = LoginForm;
 	};
 </script>
 
-{#if action === 'login'}
-	<LoginForm bind:form={loginForm} {loading} submit={handleLogin} signup={handleSwitchAction} />
-{:else if action === 'signup'}
-	<SignUpForm bind:form={signupForm} {loading} submit={handleRegister} signin={handleSwitchAction} />
-{:else}
-	<p>Cannot determine authentication status. Please try again.</p>
-{/if}
+<svelte:component
+	this={actionComponent}
+	bind:form
+	on:cancel={() => dispatch('close')}
+	{loading}
+	submit={handleSubmit}
+	signup={toRegisterComponent}
+	signin={toLoginComponent}
+/>

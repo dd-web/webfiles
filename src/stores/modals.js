@@ -13,4 +13,4 @@ export const newFolderTitle = writable(false);
 /**
  * User registration and authentication functionality
  */
-export const userAuth = writable(false);
+export const userAuthWindow = writable(false);

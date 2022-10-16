@@ -1,10 +1,16 @@
 <script>
+	import { clickOutside } from '$lib/custom_actions';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	export let form, loading;
 	export let submit = () => {},
 		signup = () => {};
 </script>
 
 <form
+	use:clickOutside
+	on:outclick={() => dispatch('cancel')}
 	on:submit|preventDefault={submit}
 	disabled={loading}
 	class="bg-neutral-800 border border-zinc-600 rounded-md flex flex-col p-4 max-w-xs w-full"
@@ -41,8 +47,10 @@
 
 		<!-- buttons  -->
 		<div class="flex justify-between items-center px-2 mt-12">
-			<button class="bg-blue-800 hover:bg-blue-600 active:opacity-75">Login</button>
-			<button class="bg-zinc-600 hover:bg-zinc-700 active:opacity-75">Cancel</button>
+			<button type="submit" class="bg-blue-800 hover:bg-blue-600 active:opacity-75">Login</button>
+			<button type="button" on:click={() => dispatch('cancel')} class="bg-zinc-600 hover:bg-zinc-700 active:opacity-75"
+				>Cancel</button
+			>
 		</div>
 	{/if}
 </form>

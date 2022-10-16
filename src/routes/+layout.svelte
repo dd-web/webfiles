@@ -1,7 +1,7 @@
 <script>
 	import '../app.css';
 	import { currentUser, getUserProfile } from '$root/stores/user';
-	import { newFolderTitle, userAuth } from '$root/stores/modals';
+	import { newFolderTitle, userAuthWindow } from '$root/stores/modals';
 	import { onMount } from 'svelte';
 
 	import Header from '$lib/header/Header.svelte';
@@ -17,9 +17,9 @@
 	</Modal>
 {/if}
 
-{#if $userAuth}
+{#if $userAuthWindow}
 	<Modal>
-		<UserAuth on:close={() => ($userAuth = false)} />
+		<UserAuth on:close={() => ($userAuthWindow = false)} />
 	</Modal>
 {/if}
 
